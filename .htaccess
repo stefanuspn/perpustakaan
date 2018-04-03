@@ -1,0 +1,33 @@
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php
+</IfModule>
+
+ 
+
+#Tolak IP yang mencurigakan
+order allow,deny
+#Tolak akses single IP
+deny from 1.1.1.1
+allow from all
+
+#Kode untuk cache file selama 1 bulan
+<IfModule mod_expires.c>
+ExpiresActive On
+<FilesMatch "\.(flv|ico|pdf|avi|mov|ppt|doc|mp3|wmv|wav|js|css|gif|jpg|jpeg|png|swf)$">
+ExpiresDefault A2419200
+</FilesMatch>
+</IfModule>
+
+#Blok Bad Bots
+RewriteCond %{HTTP_USER_AGENT} ^WebBandit [OR]
+RewriteCond %{HTTP_USER_AGENT} ^2icommerce [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Accoona [OR]
+RewriteCond %{HTTP_USER_AGENT} ^ActiveTouristBot [OR]
+RewriteCond %{HTTP_USER_AGENT} ^addressendeutshland
+RewriteRule ^.* - [F,L]
+
+
+
