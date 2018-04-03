@@ -1,13 +1,20 @@
 <!--
-Author: Stefanus Prasetyo Nugroho
-Author URL: https://stefanuspn.github.io/
-Email: Stefanusnugroho585@gmail.com
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 <?php
+if(!file_exists("../model/mf_db.php")){
+    header("Location:./welcome.html");
+}else{
     require_once '../config/config.php';
+}
 ob_start();
 
 //Mengatur batas login
+
+
 //Mengecek status login
 if(empty($_COOKIE['admin_id']) || empty($_COOKIE['username']) || empty($_COOKIE['nama'])){
   header("Location:logout");
