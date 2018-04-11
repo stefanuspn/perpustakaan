@@ -2,12 +2,15 @@
 /*
  * @Author Stefanus Prasetyo Nugroho <stefanusnugroho585@gmail.com>
  * @Version 1.0
- * @MyFramework
  http://munazar-aceh.blogspot.co.id/2015/07/cara-manipulasi-url-website-menggunakan.html
  */
+session_start(); // memulai session
 
-session_start();
-define('_URL_','http://localhost/newperpus/');
+//$root = "http://".$_SERVER['HTTP_HOST'];
+//$root .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
+$root ='http://localhost/newperpus2/';
+
+define('_URL_',$root);
 define('__URL_JS__', _URL_.'assets/js/');
 define('__URL_CSS__', _URL_ . 'assets/css/');
 define('__URL_FA__', _URL_ .'assets/fa/css/');
@@ -17,39 +20,40 @@ define('__URL_ION__',_URL_.'assets/Ionicons/css/');
 define('__URL_SKIN__',_URL_.'assets/css/skins/');
 define('__URL_TinyMCE__',_URL_ .'assets/tinymce/');
 
-require_once "../template/templateadmin.php";
-require_once "../model/mf_model.php";
-require_once "../func/function.php";
-require_once '../model/database.php';
+// memulai koneksi ke database
+$server ="localhost";
+$user   = "root";
+$pw     = "";
+$db1     = "perpus";
+
+$link   = new mysqli($server,$user,$pw,$db1);
+
+// Awal Memanggil Class PHP
+spl_autoload_register(function($class){
+  require_once '../classes/' .$class. '.php';
+});
+
+spl_autoload_register(function($class){
+  require_once '../classes/excel_reader/' .$class. '.php';
+});
+
+spl_autoload_register(function($class){
+  require_once '../classes/html2pdf/' .$class. '.php';
+});
 
 
+
+// Akhir Memanggil Class Php
+
+$token = new Token();
+$f  = new Function_Web();
 $my = new TemplateAdmin();
-$function = new function_Web();
+$db = new Model() ;
 
- $connect = Database::getInstance();
-
-
-class CSRFToken
+function Form_Open($class,$method, $id)
 {
-	public function generate_token(){
-		$_SESSION['token']  = md5(date("dmY h:i:s").rand(10000,90000));
-		return $_SESSION['token'];
-	}
-	public function show_tokenHTML(){
-		echo '<input type="hidden" name="token" value="'.$this->generate_token().'"></input>';
-	}
-	public function validateToken($token){
-		if($token != $_SESSION['token']){
-			return false;
-		}else{
-			return true;
-		}
-	}
+	echo'  <form  class="'.$class.'" method="'.$method.'" id="'.$id.'"  enctype="multipart/form-data">';
 }
-
-
-
-
 
 /* Contoh Perulangan Tanpa while,For,Forech
 $x= 0;
@@ -60,3 +64,4 @@ if($x<10) goto a;
 */
 
 
+?>
